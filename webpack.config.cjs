@@ -1,6 +1,13 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-export default {
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
   mode: process.env.NODE_ENV || 'development',
   module: {
     rules: [
@@ -31,7 +38,8 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './src/index.html',
+      filename: './index.html', // Output filename for the HTML file
     }),
   ],
   output: {
