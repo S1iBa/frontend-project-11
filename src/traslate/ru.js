@@ -1,4 +1,5 @@
 export default {
+    translation: {
         validationForm: {
             errors: {
                 errorURL: "Ссылка должна быть валидным URL",
@@ -7,4 +8,5 @@ export default {
             },
             isValid: 'RSS загружается',
             },
+        }
 };
