@@ -1,5 +1,3 @@
-
-
 export default (data) => {
     if (data.querySelector('parsererror')) {
       throw new Error('parsererror');

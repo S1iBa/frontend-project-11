@@ -4,7 +4,7 @@ import uniqueId from './utilits.js';
 export const renderError = (feedback) => {
     const info = document.querySelector('.feedback');
     info.textContent = '';
-    info.textContent = feedback.join('');
+    info.textContent = feedback;
 };
 
 export const renderModal = (modalID) => {
@@ -110,5 +110,4 @@ export const renderContent = (feeds, posts) => {
     feedsContainer.append(feedsList);
     postsContainer.append(postList);
     const form = document.querySelector('.rss-form');
-    form.reset();
 };

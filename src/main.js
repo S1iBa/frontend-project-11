@@ -107,35 +107,15 @@ export default () => {
           watchedState.rssData.urlList = [ urlValue, ...urlList];
           watchedState.submitForm.state = 'finished';
           })
-          // .then(() => {
-          //   const postsElements = document.querySelectorAll('.btn-sm');
-          //   console.log(postsElements);
-          
-          //   postsElements.forEach((post) => { 
-          //     console.log(post);
-          //     post.addEventListener('click', (event) => {
-          //       event.preventDefault();
-          //       const id = event.target.dataset.postId;
-          //       console.log(id)
-          //       watchedState.rssData.modalPostId = id;
-          //     })
-          //   })
-          // })
-          // .then(() => {
-          //   watchedState.submitForm.state = 'filling';
-          // })
           .catch((err) => {
-            console.log(err);
             watchedState.submitForm.state = 'failed';
-            watchedState.submitForm.errors = [
-              i18next.t('submitProcess.errors.rssNotValid'),
-            ];
+            watchedState.submitForm.errors = err;
           })
           .then(() => updatePosts(watchedState, state.rssData.urlList));
     })
     .catch(e => {
-      watchedState.submitForm.state = 'failing';
-      watchedState.submitForm.errors.push(e.type);
+      watchedState.submitForm.state = 'failed';
+      watchedState.submitForm.errors.push(e);
       console.log(watchedState.submitForm.errors);
   });
   // console.log(watchedState.submitForm.errors)

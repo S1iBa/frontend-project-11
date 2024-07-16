@@ -7,6 +7,7 @@ export default (urlString, urlList) => {
     string: {
       notOneOf: i18next.t('submitProcess.errors.rssHasAlredy'),
       url: i18next.t('submitProcess.errors.additionURL'),
+      required: i18next.t('submitProcess.errors.emptyInput'),
     }
   });
 
