@@ -1,9 +1,31 @@
 import i18next from "i18next";
+import uniqueId from './utilits.js';
 
 export const renderError = (feedback) => {
     const info = document.querySelector('.feedback');
     info.textContent = '';
-    info.textContent= feedback.join('');
+    info.textContent = feedback.join('');
+};
+
+export const renderModal = (modalID) => {
+  const postElem = document.querySelectorAll('.btn.btn-primary.btn-sm');
+  console.log(modalID)
+  postElem.forEach((post) => {
+    const id = post.getAttribute('data-post-id');
+    if (modalID === id){
+    const description = post.getAttribute('data-bs-description');
+    const title = post.getAttribute('data-bs-title');
+    const link = post.getAttribute('data-bs-link');
+
+    const modalBody = document.querySelector('.modal-body');
+    modalBody.textContent = description;
+
+    const modalTitle = document.querySelector('.modal-title');
+    modalTitle.textContent = title;
+
+    const modalLink = document.querySelector('#link');
+    modalLink.href = link;
+  }})
 };
 
 export const renderForm = (feedback) => {
@@ -72,29 +94,13 @@ export const renderContent = (feeds, posts) => {
           button.textContent = i18next.t('viewing');
           button.classList.add('btn', 'btn-primary', 'btn-sm');
           button.setAttribute('type', 'button');
-          button.setAttribute('data-toggle', 'modal');
-          button.setAttribute('data-target', '#myModal');
-          button.setAttribute('data-description', description);
-          button.setAttribute('data-title', title);
-          button.setAttribute('data-link', link);
-          button.addEventListener('click', (event) => {
-
-            event.preventDefault();
-            // state.isModalActive = true;
-            const button = event.relatedTarget;
-            const description = button.dataset.description;
-            const title = button.dataset.title;
-            const link = button.dataset.link;
-        
-            const modalBody = document.querySelector('#description');
-            modalBody.textContent = description;
-        
-            const modalTitle = document.querySelector('#title');
-            modalTitle.textContent = title;
-        
-            const modalLink = document.querySelector('#link');
-            modalLink.href = link;
-          });
+          button.setAttribute('data-bs-toggle', 'modal');
+          button.setAttribute('data-bs-target', '#myModal');
+          button.setAttribute('data-bs-description', description);
+          button.setAttribute('data-bs-title', title);
+          button.setAttribute('data-bs-link', link);
+          button.setAttribute('data-post-id', uniqueId());
+          // console.log(button);
           postElem.append(postUrl);
           postElem.append(button);
           postList.append(postElem);

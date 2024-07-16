@@ -1,9 +1,10 @@
 
 
 export default (data) => {
-    // if (data.querySelector('parsererror')) {
-    //   throw new Error('parsererror');
-    // }
+    if (data.querySelector('parsererror')) {
+      throw new Error('parsererror');
+    }
+    console.log(data);
     const channel = data.querySelector('channel');
     console.log(channel);
     const channelItems = [...channel.querySelectorAll('item')];

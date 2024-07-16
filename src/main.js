@@ -22,11 +22,12 @@ export default () => {
 
 
   const updatePosts = (state, urlList) => {
-    urlList.reverse().forEach(({ id, link }) => {
+    urlList.reverse().forEach(( link ) => {
         getRss(link).then((data) => {
             const { infoItems } = parsing(data);
-            console.log(infoItems);
+            // console.log(infoItems);
             // const validUrl = validateString(link, state.rssData.urlList);
+            const id = uniqueId();
             const { posts } = state.rssData;
             const updatedPosts = infoItems.map(({ title, description, link }) => ({
                 id,
@@ -36,16 +37,26 @@ export default () => {
             }));
             const newPosts = _.differenceWith(updatedPosts, posts, _.isEqual);
             state.rssData.posts = [...newPosts, ...state.rssData.posts];
+        })
+        .then(() => {
+          const postsElements = document.querySelectorAll('.btn-sm');
+          console.log(postsElements);
+        
+          postsElements.forEach((post) => { 
+            console.log(post);
+            post.addEventListener('click', (event) => {
+              event.preventDefault();
+              const id = event.target.dataset.postId;
+              console.log(id)
+              watchedState.rssData.modalPostId = id;
+            })
+          })
         });
     });
     setTimeout(() => updatePosts(state, urlList), 5000);
   };
 
   const state = {
-      // validationInfo: {
-      //   isValid: true,
-      //   invalidationType: "",
-      // },
       submitForm: {
           state: 'filling',
           validationError: '',
@@ -55,14 +66,15 @@ export default () => {
           feeds: [],
           posts: [],
           urlList: [],
+          modalPostId: [],
       },
   };
 
   const addBtn = document.querySelector('.addBtn');
   addBtn.textContent = i18next.t('add');
-  const closeModalBtn = document.querySelector('.closeModalBtn');
+  const closeModalBtn = document.querySelector('.btn-secondary');
   closeModalBtn.textContent = i18next.t('close');
-  const goModalBtn = document.querySelector('.goModalBtn');
+  const goModalBtn = document.querySelector('.btn-primary');
   goModalBtn.textContent = i18next.t('go');
 
   const watchedState = watcher(state);
@@ -74,7 +86,9 @@ export default () => {
     watchedState.submitForm.state = 'processing';
     const formData = new FormData(e.target);
     const urlValue = formData.get('value');
-    validateString(urlValue, state.rssData.urlList)
+    const validatedValue = validateString(urlValue, state.rssData.urlList);
+    // console.log(validatedValue);
+    validatedValue
     .then(() => {
       getRss(urlValue)
         .then((data) => {
@@ -90,12 +104,26 @@ export default () => {
               link,
           }));
           watchedState.rssData.posts = [ ...newPosts, ...posts ];
-          watchedState.rssData.urlList = [{ id, link: urlValue }, ...urlList];
+          watchedState.rssData.urlList = [ urlValue, ...urlList];
           watchedState.submitForm.state = 'finished';
           })
-          .then(() => {
-              watchedState.submitForm.state = 'filling';
-          })
+          // .then(() => {
+          //   const postsElements = document.querySelectorAll('.btn-sm');
+          //   console.log(postsElements);
+          
+          //   postsElements.forEach((post) => { 
+          //     console.log(post);
+          //     post.addEventListener('click', (event) => {
+          //       event.preventDefault();
+          //       const id = event.target.dataset.postId;
+          //       console.log(id)
+          //       watchedState.rssData.modalPostId = id;
+          //     })
+          //   })
+          // })
+          // .then(() => {
+          //   watchedState.submitForm.state = 'filling';
+          // })
           .catch((err) => {
             console.log(err);
             watchedState.submitForm.state = 'failed';
@@ -106,22 +134,10 @@ export default () => {
           .then(() => updatePosts(watchedState, state.rssData.urlList));
     })
     .catch(e => {
+      watchedState.submitForm.state = 'failing';
       watchedState.submitForm.errors.push(e.type);
+      console.log(watchedState.submitForm.errors);
   });
-  console.log(watchedState.submitForm.errors)
-  });
-
-  const myModalEl = document.getElementById('myModal')
-  myModalEl.addEventListener('hidden.bs.modal', function (event) {
-    const button = event.relatedTarget;
-  
-    const modalBody = myModalEl.querySelector('#description');
-    modalBody.textContent = description;
-
-    const modalTitle = myModalEl.querySelector('#title');
-    modalTitle.textContent = title;
-
-    const modalLink = myModalEl.querySelector('#link');
-    modalLink.href = link;
+  // console.log(watchedState.submitForm.errors)
   });
 };
