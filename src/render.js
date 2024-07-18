@@ -25,6 +25,7 @@ export const renderModal = (modalID) => {
 
     const modalLink = document.querySelector('#link');
     modalLink.href = link;
+    // window.open(modalLink.href, '_blank');
   }})
 };
 
@@ -111,3 +112,4 @@ export const renderContent = (feeds, posts) => {
     postsContainer.append(postList);
     const form = document.querySelector('.rss-form');
 };
+

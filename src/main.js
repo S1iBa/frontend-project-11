@@ -13,6 +13,9 @@ export default () => {
     lng: 'ru',
     debug: true,
     resources: language,
+    interpolation: {
+      escapeValue: false
+    }
   });
 
   const getRss = (url) => axios
@@ -109,14 +112,14 @@ export default () => {
           })
           .catch((err) => {
             watchedState.submitForm.state = 'failed';
-            watchedState.submitForm.errors = err;
+            watchedState.submitForm.errors = i18next.t('rssNotValid')
           })
           .then(() => updatePosts(watchedState, state.rssData.urlList));
     })
     .catch(e => {
       watchedState.submitForm.state = 'failed';
-      watchedState.submitForm.errors.push(e);
-      console.log(watchedState.submitForm.errors);
+      // watchedState.submitForm.errors.push(e);
+      watchedState.submitForm.errors = i18next.t(e);
   });
   // console.log(watchedState.submitForm.errors)
   });

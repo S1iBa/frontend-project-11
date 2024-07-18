@@ -1,23 +1,28 @@
 import i18next from 'i18next';
 import * as yup from 'yup';
 
-export default (urlString, urlList) => {
-
-  yup.setLocale({
-    string: {
-      notOneOf: i18next.t('submitProcess.errors.rssHasAlredy'),
-      url: i18next.t('submitProcess.errors.additionURL'),
-      required: i18next.t('submitProcess.errors.emptyInput'),
+const getValidationSchema = (urlString, urlList) => {
+  const getValidationMessages = () => ({
+    mixed: {
+      notOneOf: i18next.t('rssHasAlredy'),
+      url: i18next.t('additionURL'),
+      required: i18next.t('emptyInput'),
     }
   });
 
   const validationSchema = yup.object().shape({
-      url: yup.string()
-        .url()
-        .required()
-        .notOneOf(urlList),
-    });
+    url: yup.string()
+      .url()
+      .required()
+      .notOneOf(urlList),
+  });
 
-  return validationSchema.validate({ url: urlString});
+  yup.setLocale(getValidationMessages());
+
+  return validationSchema;
 };
 
+export default (urlString, urlList) => {
+  const validationSchema = getValidationSchema(urlString, urlList);
+  return validationSchema.validate({ url: urlString });
+};
