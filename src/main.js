@@ -6,7 +6,6 @@ import watcher from './watcher.js';
 import language from './traslate/languages.js'
 import uniqueId from './utilits.js';
 import _ from 'lodash';
-import { error } from 'jquery';
 
 
 export default () => {
@@ -22,7 +21,10 @@ export default () => {
   const getRss = (url) => axios
     .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
     .then(resp => new DOMParser().parseFromString(resp.data.contents, "text/xml"))
-    .catch((e) => console.log(e.type));
+    .catch(() => {
+      watchedState.submitForm.state = 'failed';
+      watchedState.submitForm.errors = i18next.t('networkRequest');
+    });
 
 
   const updatePosts = (state, urlList) => {
@@ -89,7 +91,6 @@ export default () => {
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
     const validatedValue = validateString(urlValue, state.rssData.urlList);
-    // console.log(validatedValue);
     validatedValue
     .then(() => {
       getRss(urlValue)
@@ -112,10 +113,8 @@ export default () => {
           .then(() => updatePosts(watchedState, state.rssData.urlList))
           .catch((err) => {
             watchedState.submitForm.state = 'failed';
-            console.log(`here is err ${err.message}`)
             if(err.message === 'parsererror') {
               watchedState.submitForm.errors = i18next.t('rssNotValid')
-              console.log(`here is err ${err}`)
             }
           });
     })
