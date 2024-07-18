@@ -31,11 +31,9 @@ export const renderModal = (modalID) => {
 
 export const renderForm = (feedback) => {
     const input = document.querySelector('#url-input');
-    console.log(input);
     const submitBtn = document.querySelector('#submit');
     const info = document.querySelector('.feedback');
     const form = document.querySelector('.rss-form');
-    console.log(feedback);
     info.textContent = '';
     switch (feedback) {
         case 'failed': {
@@ -67,16 +65,46 @@ export const renderContent = (feeds, posts) => {
     const feedsContainer = document.querySelector('.feeds');
     feedsContainer.innerHTML = '';
     postsContainer.innerHTML = '';
+
+    const cardBorderPosts = document.createElement('div');
+    cardBorderPosts.classList.add('card', 'border-0');
+    const cardBodyPosts = document.createElement('div');
+    cardBodyPosts.classList.add('card-body');
+    // cardBorderPosts.append(cardBodyPosts);
+
+    const cardBorderFeeds = document.createElement('div');
+    cardBorderFeeds.classList.add('card', 'border-0');
+    const cardBodyFeeds= document.createElement('div');
+    cardBodyFeeds.classList.add('card-body');
+    // cardBorderFeeds.append(cardBodyFeeds);
+
     const postsTitle = document.createElement('h2');
+    postsTitle.classList.add('card-title','h4');
+    cardBodyPosts.append(postsTitle);
+
     const feedsTitle = document.createElement('h2');
+    feedsTitle.classList.add('card-title', 'h4');
+    cardBodyFeeds.append(feedsTitle);
+
     feedsTitle.textContent = i18next.t('feeds_title');
     postsTitle.textContent = i18next.t('posts_title');
-    feedsContainer.append(feedsTitle);
-    postsContainer.append(postsTitle);
+
+
+    // const cardBodyposts = document.createElement('div');
+    // cardBodyposts.classList.add('card-body');
+    // cardBodyposts.append(postsTitle);
+    // const cardBodyfeeds = document.createElement('div');
+    // cardBodyfeeds.classList.add('card-body');
+    // cardBodyfeeds.append(feedsTitle);
+
+    feedsContainer.append(cardBorderFeeds);
+    postsContainer.append(cardBorderPosts);
+
     const feedsList = document.createElement('ul');
-    feedsList.classList.add('list-group', 'mb-5');
+    feedsList.classList.add('list-group', 'border-0', 'rounded-0');
+
     const postList = document.createElement('ul');
-    postList.classList.add('list-group');
+    postList.classList.add('list-group', 'border-0', 'rounded-0');
 
     feeds.forEach(({id, feedTitle, feedDescription}) => {
     // console.log(feedTitle);
@@ -118,7 +146,10 @@ export const renderContent = (feeds, posts) => {
       })
       feedsList.append(feedElem);
     });
-    feedsContainer.append(feedsList);
-    postsContainer.append(postList);
+    cardBodyFeeds.append(feedsList);
+    cardBodyPosts.append(postList);
+    cardBorderFeeds.append(cardBodyFeeds);
+    cardBorderPosts.append(cardBodyPosts);
+
 };
 
