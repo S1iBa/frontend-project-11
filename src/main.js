@@ -21,7 +21,7 @@ export default () => {
   const getRss = (url) => axios
     .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
     .then(resp => new DOMParser().parseFromString(resp.data.contents, "text/xml"))
-    .catch((e) => console.log(e));
+    .catch((e) => watchedState.submitForm.errors = i18next.t(e.type));
 
 
   const updatePosts = (state, urlList) => {
@@ -43,8 +43,6 @@ export default () => {
         })
         .then(() => {
           const postsElements = document.querySelectorAll('.btn-sm');
-          console.log(postsElements);
-        
           postsElements.forEach((post) => { 
             console.log(post);
             post.addEventListener('click', (event) => {
@@ -87,8 +85,8 @@ export default () => {
     e.preventDefault();
     watchedState.submitForm.errors = [];
     watchedState.submitForm.state = 'processing';
-    const formData = new FormData(e.target);
-    const urlValue = formData.get('value');
+    const formData = document.querySelector('#url-input');
+    const urlValue = formData.value;
     const validatedValue = validateString(urlValue, state.rssData.urlList);
     // console.log(validatedValue);
     validatedValue
@@ -110,17 +108,21 @@ export default () => {
           watchedState.rssData.urlList = [ urlValue, ...urlList];
           watchedState.submitForm.state = 'finished';
           })
+          .then(() => updatePosts(watchedState, state.rssData.urlList))
           .catch((err) => {
             watchedState.submitForm.state = 'failed';
-            watchedState.submitForm.errors = i18next.t('rssNotValid')
-          })
-          .then(() => updatePosts(watchedState, state.rssData.urlList));
+            watchedState.submitForm.errors = i18next.t(err.type)
+            console.log(`here is err ${err.type}`)
+          });
     })
     .catch(e => {
       watchedState.submitForm.state = 'failed';
-      // watchedState.submitForm.errors.push(e);
-      watchedState.submitForm.errors = i18next.t(e);
+      // watchedState.submitForm.errors.push(e.type);
+      if (e.type === 'url'){
+        watchedState.submitForm.errors = i18next.t('additionURL');
+      } if (e.type === 'notOneOf') {
+        watchedState.submitForm.errors = i18next.t('rssHasAlredy');
+      }
   });
-  // console.log(watchedState.submitForm.errors)
   });
 };

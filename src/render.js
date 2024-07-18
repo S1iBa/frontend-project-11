@@ -31,9 +31,11 @@ export const renderModal = (modalID) => {
 
 export const renderForm = (feedback) => {
     const input = document.querySelector('#url-input');
+    console.log(input);
     const submitBtn = document.querySelector('#submit');
     const info = document.querySelector('.feedback');
     const form = document.querySelector('.rss-form');
+    console.log(feedback);
     info.textContent = '';
     switch (feedback) {
         case 'failed': {
@@ -50,6 +52,7 @@ export const renderForm = (feedback) => {
         case 'finished': {
           input.classList.remove('is-invalid');
           submitBtn.removeAttribute('disabled');
+          info.classList.remove('text-danger');
           info.textContent = i18next.t('success');
           info.classList.add('text-success');
           form.reset();
@@ -117,6 +120,5 @@ export const renderContent = (feeds, posts) => {
     });
     feedsContainer.append(feedsList);
     postsContainer.append(postList);
-    const form = document.querySelector('.rss-form');
 };
 
