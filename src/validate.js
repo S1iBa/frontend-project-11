@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import * as yup from 'yup';
 
-const getValidationSchema = (urlString, urlList) => {
+const getValidationSchema = (urlList) => {
   const getValidationMessages = () => ({
     mixed: {
       notOneOf: i18next.t('rssHasAlredy'),
@@ -23,6 +23,6 @@ const getValidationSchema = (urlString, urlList) => {
 };
 
 export default (urlString, urlList) => {
-  const validationSchema = getValidationSchema(urlString, urlList);
+  const validationSchema = getValidationSchema(urlList);
   return validationSchema.validate({ url: urlString });
 };
