@@ -127,7 +127,7 @@ export const renderContent = (feeds, posts) => {
             );
           const postUrl = document.createElement('a');
           postUrl.href = link;
-          postUrl.classList.add('font-weight-bold');
+          postUrl.classList.add('fw-bold');
           postUrl.textContent = title;
           const button = document.createElement('button');
           button.textContent = i18next.t('viewing');
