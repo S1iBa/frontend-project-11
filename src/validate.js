@@ -7,7 +7,7 @@ const getValidationSchema = (urlList) => {
       notOneOf: i18next.t('rssHasAlredy'),
       url: i18next.t('additionURL'),
       required: i18next.t('emptyInput'),
-    }
+    },
   });
 
   const validationSchema = yup.object().shape({

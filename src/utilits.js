@@ -1,3 +1,1 @@
-export default () => {
-    return Date.now().toString() + Math.random();
-};
+export default () => (Date.now().toString() + Math.random());
