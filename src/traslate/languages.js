@@ -1,23 +1,18 @@
-import i18next from "i18next";
 export default {
   ru: {
-  translation: {
-    submitProcess: {
+    translation: {
       success: 'RSS успешно загружен',
-      errors: {
-        emptyInput: 'Не должно быть пустым',
-        additionURL: 'Ссылка должна быть валидным URL',
-        networkRequest: 'Ошибка сети',
-        rssNotValid: 'Ресурс не содержит валидный RSS',
-        rssHasAlredy: 'RSS уже существует',
-      },
+      emptyInput: 'Не должно быть пустым',
+      additionURL: 'Ссылка должна быть валидным URL',
+      networkRequest: 'Ошибка сети',
+      rssNotValid: 'Ресурс не содержит валидный RSS',
+      rssHasAlredy: 'RSS уже существует',
+      add: 'Добавить',
+      viewing: 'Просмотр',
+      close: 'Закрыть',
+      go: 'Вперед',
+      feeds_title: 'Фиды',
+      posts_title: 'Посты',
     },
-    add: 'Добавить',
-    viewing: 'Просмотр',
-    close: 'Закрыть',
-    go: 'Вперед',
-    feeds_title: 'Фиды',
-    posts_title: 'Посты',
   },
-}
 };

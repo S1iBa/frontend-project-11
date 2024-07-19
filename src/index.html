@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <body class="d-flex flex-column min-vh-100">  
-  <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id='title'>Title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           </button>
         </div>
         <div class="modal-body" id="description">
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary closeModalBtn" data-dismiss="modal">Close</button>
-          <a type="button" class="btn btn-primary goModalBtn" id='link'>Go</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a type="button" class="btn btn-primary" id='link'>Go</a>
         </div>
       </div>
     </div>
@@ -33,21 +31,26 @@
 <form action="" class="rss-form text-body">
   <div class="row"><div class="col">
     <div class="form-floating">
-      <input id="url-input" autofocus="" required="" name="value" aria-label="url" class="form-control form-control-lg w-100" placeholder="Example: https://lorem-rss.hexlet.app/feed" autocomplete="off">
+      <input id="url-input" autofocus required name="url" aria-label="url" 
+      class="form-control form-control-lg w-100" placeholder="Ссылка RSS" autocomplete="off">
+      <label for="url-input">Ссылка RSS</label>
   </div>
     </div>
     <div class="col-auto">
     <button type="submit" id="submit" aria-label="add" class="h-100 btn btn-lg btn-primary px-sm-5 addBtn">Добавить</button></div>
     </div>
 </form>
-<div class="feedback text-danger"></div>
+<p class="mt-2 mb-0">Пример: https://lorem-rss.hexlet.app/feed</p>
+<p class="feedback m-0 position-absolute small"></p>
  </div>
 </div>
 </section>
         <section class="container-fluid container-xxl p-5">
           <div class="row">
-          <div class="col-md-10 col-lg-8 order-1 mx-auto posts"></div>
-          <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds"></div>
+          <div class="col-md-10 col-lg-8 order-1 mx-auto posts">
+          </div>
+          <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds">
+          </div>
           </div>
       </section>
     </main>
