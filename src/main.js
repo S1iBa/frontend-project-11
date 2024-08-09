@@ -39,6 +39,16 @@ export default () => {
   const postsContainer = document.querySelector('.posts');
   const form = document.querySelector('.rss-form');
 
+  const errorHandler = (err) => {
+    if (err.isAxiosError) {
+      return watchedState.submitForm.errors = "AxiosError";
+    } if (err.isParseError) {
+      return watchedState.submitForm.errors = "parsererror";
+    } else {
+      return watchedState.submitForm.errors = err.type;
+    }
+  };
+
   const updatePosts = (existedState, urlList) => {
     urlList.forEach((singleUrl) => {
       axios
@@ -52,7 +62,10 @@ export default () => {
         const newIdPosts = newPosts.map(item => ({...item, id: feedId}));
         newIdPosts.forEach((newIdPost) => existedState.rssData.posts = [ newIdPost, ...state.rssData.posts])
       })
-      .catch(err => console.log(err.message))
+      .catch(err => {
+        watchedState.submitForm.state = 'failed';
+        errorHandler(err);
+      })
       .finally(setTimeout(() => updatePosts(watchedState, watchedState.rssData.urlList), 5000));
     })
   };
@@ -73,13 +86,7 @@ const getData = (url) => axios
   })
   .catch((e) => {
     watchedState.submitForm.state = 'failed';
-    if (e.isAxiosError) {
-      watchedState.submitForm.errors = "AxiosError";
-    } if (e.isParseError) {
-      watchedState.submitForm.errors = "parsererror";
-    } else {
-      watchedState.submitForm.errors = "unknowError";
-    }
+    errorHandler(e);
   })
   .finally(setTimeout(() => updatePosts(watchedState, watchedState.rssData.urlList), 5000));
 
@@ -96,15 +103,13 @@ const getData = (url) => axios
     watchedState.submitForm.state = 'processing';
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
-    const validatedValue = validateString(urlValue, state.rssData.urlList);
-
-    validatedValue
+    validateString(urlValue, state.rssData.urlList)
       .then(_ => {
         getData(urlValue)
       })
       .catch(e => {
         watchedState.submitForm.state = 'failed';
-        watchedState.submitForm.errors = e.type;
+        errorHandler(e);
       })
   });
 };

@@ -10,8 +10,7 @@ export const renderError = (feedback) => {
     info.textContent = i18next.t('rssHasAlredy');
   } if (feedback === 'parsererror') {
     info.textContent = i18next.t('rssNotValid');
-  } 
-  if (feedback === 'AxiosError' || "Network Error") {
+  } if (feedback === 'AxiosError') {
     info.textContent = i18next.t('networkRequest')
   }
 };
