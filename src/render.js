@@ -113,17 +113,17 @@ export const renderContent = (feeds, posts, uiState) => {
   postList.classList.add('list-group', 'border-0', 'rounded-0');
   console.log(feeds);
   console.log(posts);
-  feeds.forEach(({ id, title: feedTitle, description: feedDescription }) => {
+  feeds.forEach(({ id, title: feedtitle, description: feedDescription }) => {
     const feedElem = document.createElement('li');
     feedElem.classList.add('list-group-item');
     const headerElem = document.createElement('h3');
-    headerElem.textContent = feedTitle;
+    headerElem.textContent = feedtitle;
     const descrElem = document.createElement('p');
     descrElem.textContent = feedDescription;
     feedElem.append(headerElem);
     feedElem.append(descrElem);
     const items = posts.filter((post) => post.id === id);
-    items.forEach(({ title, link, description }) => {
+    items.forEach(({ title: postTitle, link: postLink, description: postDescription }) => {
       const postElem = document.createElement('li');
       postElem.classList.add(
         'list-group-item',
@@ -138,21 +138,21 @@ export const renderContent = (feeds, posts, uiState) => {
       button.setAttribute('type', 'button');
       button.setAttribute('data-bs-toggle', 'modal');
       button.setAttribute('data-bs-target', '#myModal');
-      button.setAttribute('data-bs-description', description);
-      button.setAttribute('data-bs-title', title);
-      button.setAttribute('data-bs-link', link);
+      button.setAttribute('data-bs-description', postDescription);
+      button.setAttribute('data-bs-title', postTitle);
+      button.setAttribute('data-bs-link', postLink);
       button.setAttribute('data-post-id', uniqueId());
 
       const postUrl = document.createElement('a');
-      postUrl.href = link;
+      postUrl.href = postLink;
       postUrl.setAttribute('target', '_blank');
       postUrl.setAttribute('rel', 'noopener noreferrer');
       const urlId = button.getAttribute('data-post-id');
-      postUrl.setAttribute('data-bs-link', link);
+      postUrl.setAttribute('data-bs-link', postLink);
       postUrl.setAttribute('data-post-id', urlId);
-      postUrl.textContent = title;
+      postUrl.textContent = postTitle;
       postUrl.classList.remove('fw-bold');
-      if (uiState.includes(link) === true) {
+      if (uiState.includes(postLink) === true) {
         postUrl.classList.add('fw-normal', 'link-secondary');
       } else {
         postUrl.classList.add('fw-bold');

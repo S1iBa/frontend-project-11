@@ -71,7 +71,7 @@ export default () => {
     });
   };
 
-  const getData = (url) => axios
+  const fetchData = (url) => axios
     .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
     .then((resp) => {
       const parsedData = parsing(resp.data.contents);
@@ -85,7 +85,6 @@ export default () => {
       watchedState.rssData.posts = [...newPosts, ...posts];
       watchedState.rssData.urlList = [url, ...urlList];
       watchedState.submitForm.state = 'finished';
-      return id;
     })
     .catch((e) => {
       watchedState.submitForm.state = 'failed';
@@ -107,7 +106,7 @@ export default () => {
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
     validateString(urlValue, state.rssData.urlList)
-      .then(getData(urlValue))
+      .then(({url}) => fetchData(url))
       .catch((error) => {
         watchedState.submitForm.state = 'failed';
         errorHandler(error);
