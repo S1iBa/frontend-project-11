@@ -11,7 +11,7 @@ export const renderError = (feedback) => {
   } if (feedback === 'parsererror') {
     info.textContent = i18next.t('rssNotValid');
   } if (feedback === 'AxiosError') {
-    info.textContent = i18next.t('networkRequest')
+    info.textContent = i18next.t('networkRequest');
   }
 };
 
@@ -111,14 +111,15 @@ export const renderContent = (feeds, posts, uiState) => {
 
   const postList = document.createElement('ul');
   postList.classList.add('list-group', 'border-0', 'rounded-0');
-
-  feeds.forEach(({ id, title, description }) => {
+  console.log(feeds);
+  console.log(posts);
+  feeds.forEach(({ id, title: feedTitle, description: feedDescription }) => {
     const feedElem = document.createElement('li');
     feedElem.classList.add('list-group-item');
     const headerElem = document.createElement('h3');
-    headerElem.textContent = title;
+    headerElem.textContent = feedTitle;
     const descrElem = document.createElement('p');
-    descrElem.textContent = description;
+    descrElem.textContent = feedDescription;
     feedElem.append(headerElem);
     feedElem.append(descrElem);
     const items = posts.filter((post) => post.id === id);

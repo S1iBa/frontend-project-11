@@ -35,66 +35,69 @@ export default () => {
   };
   const watchedState = watcher(state);
 
-
   const postsContainer = document.querySelector('.posts');
   const form = document.querySelector('.rss-form');
 
   const errorHandler = (err) => {
     if (err.isAxiosError) {
-      return watchedState.submitForm.errors = "AxiosError";
+      watchedState.submitForm.errors = 'AxiosError';
     } if (err.isParseError) {
-      return watchedState.submitForm.errors = "parsererror";
+      watchedState.submitForm.errors = 'parsererror';
     } else {
-      return watchedState.submitForm.errors = err.type;
+      watchedState.submitForm.errors = err.type;
     }
   };
 
-  const updatePosts = (existedState, urlList) => {
+  const updatePosts = (urlList) => {
     urlList.forEach((singleUrl) => {
       axios
-      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(singleUrl)}`)
-      .then((resp) => {
-        const parsed = parsing(resp.data.contents);
-        const compatator = (a, b) => a.title === b.title;
-        const { feeds } = state.rssData;
-        const newPosts = _.differenceWith(parsed.items, state.rssData.posts, compatator);
-        const feedId = feeds.find(feed => feed.url === singleUrl).id
-        const newIdPosts = newPosts.map(item => ({...item, id: feedId}));
-        newIdPosts.forEach((newIdPost) => existedState.rssData.posts = [ newIdPost, ...state.rssData.posts])
-      })
-      .catch(err => {
-        watchedState.submitForm.state = 'failed';
-        errorHandler(err);
-      })
-      .finally(setTimeout(() => updatePosts(watchedState, watchedState.rssData.urlList), 5000));
-    })
+        .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(singleUrl)}`)
+        .then((resp) => {
+          const parsed = parsing(resp.data.contents);
+          const compatator = (a, b) => a.title === b.title;
+          const { feeds, posts } = state.rssData;
+          const newPosts = _.differenceWith(parsed.items, state.rssData.posts, compatator);
+          const feedId = feeds.find((feed) => feed.url === singleUrl).id;
+          const newIdPosts = newPosts.map((item) => ({ ...item, id: feedId }));
+          newIdPosts.forEach((newIdPost) => {
+            watchedState.rssData.posts = [newIdPost, ...posts];
+          });
+        })
+        .catch((err) => {
+          watchedState.submitForm.state = 'failed';
+          errorHandler(err);
+        })
+        .finally(setTimeout(() => updatePosts(watchedState.rssData.urlList), 5000));
+    });
   };
 
-const getData = (url) => axios
-  .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
-  .then((resp) => {
-    const parsedData = parsing(resp.data.contents);
-    const { feeds, posts, urlList } = state.rssData;
-    const { title, description, items } = parsedData;
-    const id = uniqueId();
-    watchedState.rssData.feeds = [{ id, title, description, url }, ...feeds];
-    const newPosts = items.map(item => ({...item, id }));
-    watchedState.rssData.posts = [...newPosts, ...posts];
-    watchedState.rssData.urlList = [url, ...urlList];
-    watchedState.submitForm.state = 'finished';
-    return id;
-  })
-  .catch((e) => {
-    watchedState.submitForm.state = 'failed';
-    errorHandler(e);
-  })
-  .finally(setTimeout(() => updatePosts(watchedState, watchedState.rssData.urlList), 5000));
+  const getData = (url) => axios
+    .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+    .then((resp) => {
+      const parsedData = parsing(resp.data.contents);
+      const { feeds, posts, urlList } = state.rssData;
+      const { title, description, items } = parsedData;
+      const id = uniqueId();
+      watchedState.rssData.feeds = [{
+        id, title, description, url,
+      }, ...feeds];
+      const newPosts = items.map((item) => ({ ...item, id }));
+      watchedState.rssData.posts = [...newPosts, ...posts];
+      watchedState.rssData.urlList = [url, ...urlList];
+      watchedState.submitForm.state = 'finished';
+      return id;
+    })
+    .catch((e) => {
+      watchedState.submitForm.state = 'failed';
+      errorHandler(e);
+    })
+    .finally(setTimeout(() => updatePosts(watchedState.rssData.urlList), 5000));
 
   postsContainer.addEventListener('click', (event) => {
     const id = event.target.dataset.postId;
     const postLink = event.target.dataset.bsLink;
     watchedState.rssData.modalPostId = id;
-    watchedState.linkState.viewedPosts.push(postLink)
+    watchedState.linkState.viewedPosts.push(postLink);
   });
 
   form.addEventListener('submit', (e) => {
@@ -104,12 +107,10 @@ const getData = (url) => axios
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
     validateString(urlValue, state.rssData.urlList)
-      .then(_ => {
-        getData(urlValue)
-      })
-      .catch(e => {
+      .then(getData(urlValue))
+      .catch((error) => {
         watchedState.submitForm.state = 'failed';
-        errorHandler(e);
-      })
+        errorHandler(error);
+      });
   });
 };
