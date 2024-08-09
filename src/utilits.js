@@ -1,1 +1,3 @@
-export default () => (Date.now().toString() + Math.random());
+import _ from 'lodash';
+
+export default () => _.uniqueId();

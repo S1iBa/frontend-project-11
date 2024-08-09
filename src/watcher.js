@@ -17,10 +17,11 @@ export default (state) => onChange(state, (path, value) => {
       break;
     }
     case 'submitForm.errors': {
-      renderError(value);
+      renderError(state.submitForm.errors);
       break;
     }
     case 'rssData.posts': {
+      console.log("got here")
       renderContent(state.rssData.feeds, state.rssData.posts, state.linkState.viewedPosts);
       break;
     }

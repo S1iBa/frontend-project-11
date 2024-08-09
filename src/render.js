@@ -4,12 +4,20 @@ import uniqueId from './utilits.js';
 export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
   info.textContent = '';
-  info.textContent = feedback;
+  if (feedback === 'url') {
+    info.textContent = i18next.t('additionURL');
+  } if (feedback === 'notOneOf') {
+    info.textContent = i18next.t('rssHasAlredy');
+  } if (feedback === 'parsererror') {
+    info.textContent = i18next.t('rssNotValid');
+  } 
+  if (feedback === 'AxiosError' || "Network Error") {
+    info.textContent = i18next.t('networkRequest')
+  }
 };
 
 export const renderModal = (modalID) => {
   const postElem = document.querySelectorAll('.btn.btn-primary.btn-sm');
-  console.log(modalID);
   postElem.forEach((post) => {
     const id = post.getAttribute('data-post-id');
     if (modalID === id) {
@@ -68,6 +76,12 @@ export const renderContent = (feeds, posts, uiState) => {
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
   postsContainer.innerHTML = '';
+  const addBtn = document.querySelector('.addBtn');
+  addBtn.textContent = i18next.t('add');
+  const closeModalBtn = document.querySelector('.btn-secondary');
+  closeModalBtn.textContent = i18next.t('close');
+  const goModalBtn = document.querySelector('.btn-primary');
+  goModalBtn.textContent = i18next.t('go');
 
   const cardBorderPosts = document.createElement('div');
   cardBorderPosts.classList.add('card', 'border-0');
@@ -99,13 +113,13 @@ export const renderContent = (feeds, posts, uiState) => {
   const postList = document.createElement('ul');
   postList.classList.add('list-group', 'border-0', 'rounded-0');
 
-  feeds.forEach(({ id, feedTitle, feedDescription }) => {
+  feeds.forEach(({ id, title, description }) => {
     const feedElem = document.createElement('li');
     feedElem.classList.add('list-group-item');
     const headerElem = document.createElement('h3');
-    headerElem.textContent = feedTitle;
+    headerElem.textContent = title;
     const descrElem = document.createElement('p');
-    descrElem.textContent = feedDescription;
+    descrElem.textContent = description;
     feedElem.append(headerElem);
     feedElem.append(descrElem);
     const items = posts.filter((post) => post.id === id);
@@ -128,10 +142,14 @@ export const renderContent = (feeds, posts, uiState) => {
       button.setAttribute('data-bs-title', title);
       button.setAttribute('data-bs-link', link);
       button.setAttribute('data-post-id', uniqueId());
+
       const postUrl = document.createElement('a');
       postUrl.href = link;
       postUrl.setAttribute('target', '_blank');
       postUrl.setAttribute('rel', 'noopener noreferrer');
+      const urlId = button.getAttribute('data-post-id');
+      postUrl.setAttribute('data-bs-link', link);
+      postUrl.setAttribute('data-post-id', urlId);
       postUrl.textContent = title;
       postUrl.classList.remove('fw-bold');
       if (uiState.includes(link) === true) {
