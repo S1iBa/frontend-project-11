@@ -4,14 +4,14 @@ import uniqueId from './utilits.js';
 export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
   info.textContent = '';
-  if (feedback === 'url') {
+  if (feedback === 'AxiosError' || feedback === 'networkError') {
+    info.textContent = i18next.t('networkRequest');
+  } if (feedback === 'url') {
     info.textContent = i18next.t('additionURL');
   } if (feedback === 'notOneOf') {
     info.textContent = i18next.t('rssHasAlredy');
   } if (feedback === 'parsererror') {
     info.textContent = i18next.t('rssNotValid');
-  } if (feedback === 'AxiosError') {
-    info.textContent = i18next.t('networkRequest');
   }
 };
 
@@ -111,8 +111,6 @@ export const renderContent = (feeds, posts, uiState) => {
 
   const postList = document.createElement('ul');
   postList.classList.add('list-group', 'border-0', 'rounded-0');
-  console.log(feeds);
-  console.log(posts);
   feeds.forEach(({ id, title: feedtitle, description: feedDescription }) => {
     const feedElem = document.createElement('li');
     feedElem.classList.add('list-group-item');

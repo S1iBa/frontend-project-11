@@ -43,8 +43,8 @@ export default () => {
       watchedState.submitForm.errors = 'AxiosError';
     } if (err.isParseError) {
       watchedState.submitForm.errors = 'parsererror';
-    } else {
-      watchedState.submitForm.errors = err.type;
+    } if (err.isNetworkError) {
+      watchedState.submitForm.errors = 'networkError';
     }
   };
 
@@ -106,10 +106,10 @@ export default () => {
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
     validateString(urlValue, state.rssData.urlList)
-      .then(({url}) => fetchData(url))
+      .then(({ url }) => fetchData(url))
       .catch((error) => {
         watchedState.submitForm.state = 'failed';
-        errorHandler(error);
+        watchedState.submitForm.errors = error.type;
       });
   });
 };
