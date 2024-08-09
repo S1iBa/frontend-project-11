@@ -17,7 +17,7 @@ export default (state) => onChange(state, (path, value) => {
       break;
     }
     case 'submitForm.errors': {
-      renderError(value);
+      renderError(state.submitForm.errors);
       break;
     }
     case 'rssData.posts': {
