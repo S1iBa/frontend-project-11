@@ -5,13 +5,11 @@ export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
   info.textContent = '';
   if (feedback === 'AxiosError' || feedback === 'networkError') {
-    info.textContent = i18next.t('networkRequest');
+    return info.textContent = i18next.t('networkRequest');
   } if (feedback === 'url') {
-    info.textContent = i18next.t('additionURL');
+    return info.textContent = i18next.t('additionURL');
   } if (feedback === 'notOneOf') {
-    info.textContent = i18next.t('rssHasAlredy');
-  } if (feedback === 'parsererror') {
-    info.textContent = i18next.t('rssNotValid');
+    return info.textContent = i18next.t('rssHasAlredy');
   }
 };
 
@@ -118,8 +116,7 @@ export const renderContent = (feeds, posts, uiState) => {
     headerElem.textContent = feedtitle;
     const descrElem = document.createElement('p');
     descrElem.textContent = feedDescription;
-    feedElem.append(headerElem);
-    feedElem.append(descrElem);
+    feedElem.append(headerElem, descrElem);
     const items = posts.filter((post) => post.id === id);
     items.forEach(({ title: postTitle, link: postLink, description: postDescription }) => {
       const postElem = document.createElement('li');
@@ -155,8 +152,7 @@ export const renderContent = (feeds, posts, uiState) => {
       } else {
         postUrl.classList.add('fw-bold');
       }
-      postElem.append(postUrl);
-      postElem.append(button);
+      postElem.append(postUrl, button);
       postList.append(postElem);
     });
     feedsList.append(feedElem);
