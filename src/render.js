@@ -5,15 +5,14 @@ export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
   info.textContent = '';
   if (feedback === 'axioserror') {
-    return info.textContent = i18next.t('networkRequest');
+    info.textContent = i18next.t('networkRequest');
   } if (feedback === 'url') {
-    return info.textContent = i18next.t('additionURL');
+    info.textContent = i18next.t('additionURL');
   } if (feedback === 'notOneOf') {
-    return info.textContent = i18next.t('rssHasAlredy');
+    info.textContent = i18next.t('rssHasAlredy');
   } if (feedback === 'parsererror') {
-    return info.textContent = i18next.t('rssNotValid');
+    info.textContent = i18next.t('rssNotValid');
   }
-
 };
 
 export const renderModal = (modalID) => {

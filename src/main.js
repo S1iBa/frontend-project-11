@@ -43,9 +43,8 @@ export default () => {
       return 'axioserror';
     } if (err.isParseError) {
       return 'parsererror';
-    } else {
-      return console.log(err);
     }
+    return console.log(err);
   };
 
   const updatePosts = (feeds) => {
@@ -81,8 +80,9 @@ export default () => {
       const newPosts = items.map((item) => ({ ...item, id }));
       watchedState.rssData.posts = [...newPosts, ...posts];
       watchedState.rssData.feeds.forEach((elem) => {
-        if(!linkList.includes(elem.url)) {
-          linkList.push(elem.url)}
+        if (!linkList.includes(elem.url)) {
+          linkList.push(elem.url);
+        }
       });
       watchedState.formState.state = 'finished';
     })
@@ -95,7 +95,7 @@ export default () => {
   postsContainer.addEventListener('click', (event) => {
     const id = event.target.dataset.postId;
     if (id === undefined) {
-      return
+      return;
     }
     const postLink = event.target.dataset.bsLink;
     watchedState.modalPostId = id;
