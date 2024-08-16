@@ -40,7 +40,7 @@ export default () => {
 
   const errorHandler = (err) => {
     if (err.isAxiosError) {
-      return 'AxiosError';
+      return 'axioserror';
     } if (err.isParseError) {
       return 'parsererror';
     } else {
@@ -84,7 +84,6 @@ export default () => {
         if(!linkList.includes(elem.url)) {
           linkList.push(elem.url)}
       });
-      console.log(linkList);
       watchedState.formState.state = 'finished';
     })
     .catch((e) => {

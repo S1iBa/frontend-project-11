@@ -4,13 +4,16 @@ import uniqueId from './utilits.js';
 export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
   info.textContent = '';
-  if (feedback === 'AxiosError' || feedback === 'networkError') {
+  if (feedback === 'axioserror') {
     return info.textContent = i18next.t('networkRequest');
   } if (feedback === 'url') {
     return info.textContent = i18next.t('additionURL');
   } if (feedback === 'notOneOf') {
     return info.textContent = i18next.t('rssHasAlredy');
+  } if (feedback === 'parsererror') {
+    return info.textContent = i18next.t('rssNotValid');
   }
+
 };
 
 export const renderModal = (modalID) => {
