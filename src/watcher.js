@@ -8,24 +8,24 @@ import {
 
 export default (state) => onChange(state, (path, value) => {
   switch (path) {
-    case 'submitForm.state': {
+    case 'formState.state': {
       renderForm(value);
       break;
     }
-    case 'submitForm.validationError': {
+    case 'formState.validationError': {
       renderError(value);
       break;
     }
-    case 'submitForm.errors': {
-      renderError(state.submitForm.errors);
+    case 'formState.error': {
+      renderError(state.formState.error);
       break;
     }
     case 'rssData.posts': {
       renderContent(state.rssData.feeds, state.rssData.posts, state.linkState.viewedPosts);
       break;
     }
-    case 'rssData.modalPostId': {
-      renderModal(state.rssData.modalPostId);
+    case 'modalPostId': {
+      renderModal(state.modalPostId);
       break;
     }
     case 'linkState.viewedPosts': {
