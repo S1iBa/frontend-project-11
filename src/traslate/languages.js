@@ -7,6 +7,7 @@ export default {
       networkRequest: 'Ошибка сети',
       rssNotValid: 'Ресурс не содержит валидный RSS',
       rssHasAlredy: 'RSS уже существует',
+      unknownError: 'Неизвестная ошибка',
       add: 'Добавить',
       viewing: 'Просмотр',
       close: 'Закрыть',

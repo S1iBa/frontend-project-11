@@ -6,12 +6,18 @@ export const renderError = (feedback) => {
   info.textContent = '';
   if (feedback === 'axioserror') {
     info.textContent = i18next.t('networkRequest');
+    return;
   } if (feedback === 'url') {
     info.textContent = i18next.t('additionURL');
+    return;
   } if (feedback === 'notOneOf') {
     info.textContent = i18next.t('rssHasAlredy');
+    return;
   } if (feedback === 'parsererror') {
     info.textContent = i18next.t('rssNotValid');
+    return;
+  } if (feedback === 'unknown') {
+    info.textContent = i18next.t('unknownError');
   }
 };
 
@@ -149,7 +155,7 @@ export const renderContent = (feeds, posts, uiState) => {
       postUrl.setAttribute('data-post-id', urlId);
       postUrl.textContent = postTitle;
       postUrl.classList.remove('fw-bold');
-      if (uiState.includes(postLink) === true) {
+      if (uiState.includes(postLink)) {
         postUrl.classList.add('fw-normal', 'link-secondary');
       } else {
         postUrl.classList.add('fw-bold');
