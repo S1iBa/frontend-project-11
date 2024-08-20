@@ -36,7 +36,6 @@ export default () => {
   const postsContainer = document.querySelector('.posts');
   const form = document.querySelector('.rss-form');
   const updateInterval = 5000;
-  const linkList = [];
 
   const errorHandler = (err) => {
     if (err.isAxiosError) {
@@ -44,7 +43,7 @@ export default () => {
     } if (err.isParseError) {
       return 'parsererror';
     }
-    return console.log(err);
+    return 'unknown';
   };
 
   const updatePosts = (feeds) => {
@@ -63,7 +62,7 @@ export default () => {
         .catch((err) => {
           console.log(err);
         })
-        .finally(setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval));
+        .finally(() => setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval));
     });
   };
 
@@ -79,11 +78,6 @@ export default () => {
       }, ...feeds];
       const newPosts = items.map((item) => ({ ...item, id }));
       watchedState.rssData.posts = [...newPosts, ...posts];
-      watchedState.rssData.feeds.forEach((elem) => {
-        if (!linkList.includes(elem.url)) {
-          linkList.push(elem.url);
-        }
-      });
       watchedState.formState.state = 'finished';
     })
     .catch((e) => {
@@ -94,7 +88,7 @@ export default () => {
 
   postsContainer.addEventListener('click', (event) => {
     const id = event.target.dataset.postId;
-    if (id === undefined) {
+    if (!id) {
       return;
     }
     const postLink = event.target.dataset.bsLink;
@@ -108,6 +102,7 @@ export default () => {
     watchedState.formState.state = 'processing';
     const formData = document.querySelector('#url-input');
     const urlValue = formData.value;
+    const linkList = watchedState.rssData.feeds.map((el) => el.url);
     validateString(urlValue, linkList)
       .then(({ url }) => fetchData(url))
       .catch((error) => {
