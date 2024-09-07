@@ -1,12 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-
 module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   mode: process.env.NODE_ENV || 'development',
   module: {
@@ -21,28 +21,34 @@ module.exports = {
           },
         },
       },
-      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
       },
       {
         test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'url-loader?limit=10000',
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
       },
       {
         test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-        use: 'file-loader',
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html', // Output filename for the HTML file
+      filename: './index.html',
     }),
   ],
-  output: {
-    clean: true,
-  },
 };

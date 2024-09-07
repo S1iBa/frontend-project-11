@@ -5,7 +5,7 @@ import validateString from './validate.js';
 import parsing from './parsing.js';
 import watcher from './watcher.js';
 import language from './traslate/languages.js';
-import uniqueId from './utilits.js';
+import getProxyUrl from './utils.js';
 
 export default () => {
   i18next.init({
@@ -50,7 +50,7 @@ export default () => {
     feeds.forEach((feed) => {
       const feedUrl = feed.url;
       axios
-        .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(feedUrl)}`)
+        .get(getProxyUrl(feedUrl))
         .then((resp) => {
           const parsed = parsing(resp.data.contents);
           const compatator = (a, b) => a.title === b.title;
@@ -67,24 +67,24 @@ export default () => {
   };
 
   const fetchData = (url) => axios
-    .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+    .get(getProxyUrl(url))
     .then((resp) => {
       const parsedData = parsing(resp.data.contents);
       const { feeds, posts } = state.rssData;
       const { title, description, items } = parsedData;
-      const id = uniqueId();
+      const id = _.uniqueId();
       watchedState.rssData.feeds = [{
         id, title, description, url,
       }, ...feeds];
       const newPosts = items.map((item) => ({ ...item, id }));
       watchedState.rssData.posts = [...newPosts, ...posts];
       watchedState.formState.state = 'finished';
+      setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval);
     })
     .catch((e) => {
       watchedState.formState.state = 'failed';
       watchedState.formState.error = errorHandler(e);
-    })
-    .finally(setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval));
+    });
 
   postsContainer.addEventListener('click', (event) => {
     const id = event.target.dataset.postId;

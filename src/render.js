@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import uniqueId from './utilits.js';
+import _ from 'lodash';
 
 export const renderError = (feedback) => {
   const info = document.querySelector('.feedback');
@@ -144,7 +144,7 @@ export const renderContent = (feeds, posts, uiState) => {
       button.setAttribute('data-bs-description', postDescription);
       button.setAttribute('data-bs-title', postTitle);
       button.setAttribute('data-bs-link', postLink);
-      button.setAttribute('data-post-id', uniqueId());
+      button.setAttribute('data-post-id', _.uniqueId());
 
       const postUrl = document.createElement('a');
       postUrl.href = postLink;
