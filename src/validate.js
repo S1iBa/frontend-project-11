@@ -12,6 +12,7 @@ const getValidationSchema = (urlList) => {
 
   const validationSchema = yup.object().shape({
     url: yup.string()
+      .url()
       .required()
       .notOneOf(urlList),
   });
