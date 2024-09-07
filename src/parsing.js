@@ -20,7 +20,7 @@ export default (data) => {
 
     return { title, link, description };
   });
-
+  console.log(infoItems);
   return {
     title: feedTitle,
     description: feedDescription,
