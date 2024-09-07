@@ -7,7 +7,7 @@ export const renderError = (feedback) => {
   if (feedback === 'axioserror') {
     info.textContent = i18next.t('networkRequest');
     return;
-  } if (feedback === 'url') {
+  } if (feedback === 'string') {
     info.textContent = i18next.t('additionURL');
     return;
   } if (feedback === 'notOneOf') {
