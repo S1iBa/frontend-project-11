@@ -79,12 +79,12 @@ export default () => {
       const newPosts = items.map((item) => ({ ...item, id }));
       watchedState.rssData.posts = [...newPosts, ...posts];
       watchedState.formState.state = 'finished';
-      setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval);
     })
     .catch((e) => {
       watchedState.formState.state = 'failed';
       watchedState.formState.error = errorHandler(e);
-    });
+    })
+    .finally(() => setTimeout(() => updatePosts(watchedState.rssData.feeds), updateInterval));
 
   postsContainer.addEventListener('click', (event) => {
     const id = event.target.dataset.postId;
