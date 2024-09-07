@@ -6,7 +6,7 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true, // Переместили в одну секцию output
+    clean: true,
   },
   mode: process.env.NODE_ENV || 'development',
   module: {
@@ -31,16 +31,16 @@ module.exports = {
       },
       {
         test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        type: 'asset/resource', // Встроенная альтернатива url-loader
+        type: 'asset/resource',
         generator: {
-          filename: 'fonts/[name][ext]', // Настройка пути для выходных файлов
+          filename: 'fonts/[name][ext]',
         },
       },
       {
         test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-        type: 'asset/resource', // Встроенная альтернатива file-loader
+        type: 'asset/resource',
         generator: {
-          filename: 'fonts/[name][ext]', // Настройка пути для выходных файлов
+          filename: 'fonts/[name][ext]',
         },
       },
     ],
@@ -48,7 +48,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      filename: './index.html', // Output filename for the HTML file
+      filename: './index.html',
     }),
   ],
 };
