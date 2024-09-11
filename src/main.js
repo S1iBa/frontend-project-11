@@ -104,7 +104,7 @@ export default () => {
     const urlValue = formData.value;
     const linkList = watchedState.rssData.feeds.map((el) => el.url);
     validateString(urlValue, linkList)
-      .then(({ url }) => fetchData(url))
+      .then((url) => fetchData(url))
       .catch((error) => {
         watchedState.formState.state = 'failed';
         watchedState.formState.error = error.type;

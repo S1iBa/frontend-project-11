@@ -10,12 +10,10 @@ const getValidationSchema = (urlList) => {
     },
   });
 
-  const validationSchema = yup.object().shape({
-    url: yup.string()
-      .url()
-      .required()
-      .notOneOf(urlList),
-  });
+  const validationSchema = yup.string()
+    .url()
+    .required()
+    .notOneOf(urlList);
 
   yup.setLocale(getValidationMessages());
 
@@ -24,5 +22,5 @@ const getValidationSchema = (urlList) => {
 
 export default (urlString, urlList) => {
   const validationSchema = getValidationSchema(urlList);
-  return validationSchema.validate({ url: urlString });
+  return validationSchema.validate(urlString);
 };
